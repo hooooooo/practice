@@ -1,0 +1,41 @@
+class Solution {
+    class Region {
+        int left;
+        int top;
+        int bottom;
+        int right;
+        int count;
+    }
+    
+    boolean isSurrounded(char[][] board, int r, int c, Region region){
+        if(board[r][c])
+        return 
+             !(r - 1 >= 0 && board[r-1][c] == 'O') 
+            && !(r + 1 < board.length && board[r+1][c] == 'O')
+            && !(c - 1 >= 0 && board[r][c - 1] == 'O')            
+            && !(c + 1 < board[r].length && board[r][c + 1] == 'O');        
+    }
+    
+    void pollute(char[][] board, int r, int c) {
+        if(r < 0 || r == board.length  || c < 0 || c == board[r].length || board[r][c] == 'X'){
+            return;
+        }
+        board[r][c] = 'X';
+        pollute(board, r - 1, c);
+        pollute(board, r + 1, c);
+        pollute(board, r, c - 1);
+        pollute(board, r, c + 1);        
+    }
+    public void solve(char[][] board) {
+        if(board == null || board.length == 0) {
+            return;
+        }
+        for(int r = 0; r<board.length; r++){
+            for(int c = 0; c<board[r].length; c++){
+                if(board[r][c] == 'O' && !isSurrounded(board, r, c)){
+                    pollute(board, r, c);
+                }
+            }
+        }        
+    }
+}
